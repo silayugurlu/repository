@@ -1,0 +1,214 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>KALAHA GAME</title>
+</h:head>
+
+<h:form id="formId">
+
+	<p:messages id="messages" showDetail="true" autoUpdate="true"
+		closable="true" />
+
+	<p:panel style="center">
+
+
+
+		<div id="newConference" align="center" style="background: #F4E2E2">
+
+			<h2>
+				<u><i>KALAHA GAME</i></u>
+			</h2>
+
+
+			<p:panelGrid rendered="#{!kalahManagedBean.startGame}">
+				<p:row>
+					<p:column>
+						<h2>
+							<p:outputLabel> Player 1 Name : </p:outputLabel>
+							<p:inputText value="#{kalahManagedBean.player1Name}"></p:inputText>
+						</h2>
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column>
+						<h2>
+							<p:outputLabel> Player 2 Name : </p:outputLabel>
+							<p:inputText value="#{kalahManagedBean.player2Name}"></p:inputText>
+						</h2>
+					</p:column>
+				</p:row>
+
+
+
+				<p:row>
+					<p:column>
+						<p:commandButton value="Start Game" id="startButton"
+							update="formId" actionListener="#{kalahManagedBean.startGame}"
+							style="background:'yellow'}" />
+
+					</p:column>
+				</p:row>
+
+			</p:panelGrid>
+
+
+
+
+
+
+			<h2>
+
+				<p:outputLabel value="#{kalahManagedBean.player1Name}"
+					rendered="#{kalahManagedBean.startGame}"></p:outputLabel>
+			</h2>
+
+
+
+			<table>
+				<tr>
+					<td rowspan="2"><p:commandButton id="kalah1"
+							update="player1"
+							disabled="true"
+							value="#{kalahManagedBean.kalahBoard.pits[6].countOfStones}"
+							rendered="#{kalahManagedBean.startGame}"
+							style="width:100px;height:200px;color:yellow;background:#A67B7B">
+						</p:commandButton></td>
+					<td rowspan="1"><p:panelGrid id="player1" columns="6"
+							cellpadding="10" rendered="#{kalahManagedBean.startGame}">
+
+							<p:row>
+								<p:column>
+									<p:commandButton id="player_0" update="player1,player2,kalah1,kalah2"
+										actionListener="#{kalahManagedBean.pitClickAction}"
+										value="#{kalahManagedBean.kalahBoard.pits[0].countOfStones}"
+										style="width:100px;height:100px;color:yellow;background:#A67B7B">
+									</p:commandButton>
+								</p:column>
+								<p:column>
+									<p:commandButton id="player_1" update="player1,player2,kalah1,kalah2"
+										actionListener="#{kalahManagedBean.pitClickAction}"
+										value="#{kalahManagedBean.kalahBoard.pits[1].countOfStones}"
+										style="width:100px;height:100px;color:yellow;background:#A67B7B">
+									</p:commandButton>
+								</p:column>
+
+								<p:column>
+									<p:commandButton id="player_2" update="player1,player2,kalah1,kalah2"
+										actionListener="#{kalahManagedBean.pitClickAction}"
+										value="#{kalahManagedBean.kalahBoard.pits[2].countOfStones}"
+										style="width:100px;height:100px;color:yellow;background:#A67B7B">
+									</p:commandButton>
+								</p:column>
+								<p:column>
+									<p:commandButton id="player_3" update="player1,player2,kalah1,kalah2"
+										actionListener="#{kalahManagedBean.pitClickAction}"
+										value="#{kalahManagedBean.kalahBoard.pits[3].countOfStones}"
+										style="width:100px;height:100px;color:yellow;background:#A67B7B">
+									</p:commandButton>
+								</p:column>
+								<p:column>
+									<p:commandButton id="player_4" update="player1,player2,kalah1,kalah2"
+										actionListener="#{kalahManagedBean.pitClickAction}"
+										value="#{kalahManagedBean.kalahBoard.pits[4].countOfStones}"
+										style="width:100px;height:100px;color:yellow;background:#A67B7B">
+									</p:commandButton>
+								</p:column>
+								<p:column>
+									<p:commandButton id="player_5" update="player1,player2,kalah1,kalah2"
+										actionListener="#{kalahManagedBean.pitClickAction}"
+										value="#{kalahManagedBean.kalahBoard.pits[5].countOfStones}"
+										style="width:100px;height:100px;color:yellow;background:#A67B7B">
+									</p:commandButton>
+								</p:column>
+
+
+
+							</p:row>
+						</p:panelGrid> <p:panelGrid id="player2" columns="7" cellpadding="10"
+							rendered="#{kalahManagedBean.startGame}">
+
+							<p:row>
+								<p:column>
+									<p:commandButton id="player_7" update="player1,player2,kalah1,kalah2"
+										actionListener="#{kalahManagedBean.pitClickAction}"
+										value="#{kalahManagedBean.kalahBoard.pits[7].countOfStones}"
+										style="width:100px;height:100px;color:yellow;background:#A67B7B">
+									</p:commandButton>
+								</p:column>
+								<p:column>
+									<p:commandButton id="player_8" update="player1,player2,kalah1,kalah2"
+										actionListener="#{kalahManagedBean.pitClickAction}"
+										value="#{kalahManagedBean.kalahBoard.pits[8].countOfStones}"
+										style="width:100px;height:100px;color:yellow;background:#A67B7B">
+									</p:commandButton>
+								</p:column>
+
+								<p:column>
+									<p:commandButton id="player_9" update="player1,player2,kalah1,kalah2"
+										actionListener="#{kalahManagedBean.pitClickAction}"
+										value="#{kalahManagedBean.kalahBoard.pits[9].countOfStones}"
+										style="width:100px;height:100px;color:yellow;background:#A67B7B">
+									</p:commandButton>
+								</p:column>
+								<p:column>
+									<p:commandButton id="player_10" update="player1,player2,kalah1,kalah2"
+										actionListener="#{kalahManagedBean.pitClickAction}"
+										value="#{kalahManagedBean.kalahBoard.pits[10].countOfStones}"
+										style="width:100px;height:100px;color:yellow;background:#A67B7B">
+									</p:commandButton>
+								</p:column>
+								<p:column>
+									<p:commandButton id="player_11" update="player1,player2,kalah1,kalah2"
+										actionListener="#{kalahManagedBean.pitClickAction}"
+										value="#{kalahManagedBean.kalahBoard.pits[11].countOfStones}"
+										style="width:100px;height:100px;color:yellow;background:#A67B7B">
+									</p:commandButton>
+								</p:column>
+								<p:column>
+									<p:commandButton id="player_12" update="player1,player2,kalah1,kalah2"
+										actionListener="#{kalahManagedBean.pitClickAction}"
+										value="#{kalahManagedBean.kalahBoard.pits[12].countOfStones}"
+										style="width:100px;height:100px;color:yellow;background:#A67B7B">
+									</p:commandButton>
+								</p:column>
+							</p:row>
+
+
+
+						</p:panelGrid></td>
+					<td rowspan="2"><p:column>
+							<p:commandButton id="kalah2" update="player1,player2,kalah1,kalah2"
+								
+								value="#{kalahManagedBean.kalahBoard.pits[13].countOfStones}"
+								disabled="true"
+								rendered="#{kalahManagedBean.startGame}"
+								style="width:100px;height:200px;color:yellow;background:#A67B7B">
+							</p:commandButton>
+						</p:column></td>
+				</tr>
+
+			</table>
+
+
+
+
+			<h2>
+
+				<p:outputLabel value="#{kalahManagedBean.player2Name}"
+					rendered="#{kalahManagedBean.startGame}"></p:outputLabel>
+			</h2>
+
+
+			<p:commandButton value="End Game" id="endButton" update="formId"
+				actionListener="#{kalahManagedBean.endGame}"
+				rendered="#{kalahManagedBean.startGame}" />
+		</div>
+
+	</p:panel>
+</h:form>
+</html>

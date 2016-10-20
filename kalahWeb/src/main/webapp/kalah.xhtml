@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+	<title>KALAH GAME</title>
+</h:head>
+
+<h:form id="formId">
+
+	<p:messages id="messages" showDetail="true" autoUpdate="true"
+		closable="true" />
+
+	<p:panel style="center">
+
+
+
+		<div id="game" align="center" style="background: #F4E2E2">
+
+			<h3>
+				<u> <i>KALAH GAME</i>
+				</u>
+			</h3>
+
+
+			<p:panelGrid>
+				<p:row>
+					<p:column>
+
+						<p:outputLabel> Player 1 Name : </p:outputLabel>
+						<p:inputText value="#{kalahManagedBean.player1Name}"></p:inputText>
+
+						<p:outputLabel> Player 2 Name : </p:outputLabel>
+						<p:inputText value="#{kalahManagedBean.player2Name}"></p:inputText>
+
+					</p:column>
+
+
+
+
+					<p:column>
+						<p:commandButton value="Start Game" id="startButton"
+							update="formId" actionListener="#{kalahManagedBean.startGame}"
+							style="background:'yellow'}" />
+
+					</p:column>
+				</p:row>
+
+			</p:panelGrid>
+
+			<p:outputLabel
+				value="Current Player : #{kalahManagedBean.kalahBoard.nextPlayer.name}"
+				rendered="#{kalahManagedBean.started}" id="nextPlayer"></p:outputLabel>
+
+			<p:outputLabel
+				value="Winner : #{kalahManagedBean.kalahBoard.winner.name}"
+				rendered="#{kalahManagedBean.kalahBoard.finished}" id="winner"></p:outputLabel>
+			<h2>
+
+				<p:outputLabel value="#{kalahManagedBean.kalahBoard.player2.name}"
+					rendered="#{kalahManagedBean.started}"></p:outputLabel>
+			</h2>
+
+			<table>
+				<tr>
+					<td rowspan="2"><p:commandButton id="kalah2" update="player2"
+							disabled="true"
+							value="#{kalahManagedBean.kalahBoard.player2.kalah.countOfStones}"
+							rendered="#{kalahManagedBean.started}"
+							style="width:100px;height:200px;color:yellow;background:#A67B7B">
+						</p:commandButton></td>
+					<td rowspan="1"><p:panelGrid id="player2" columns="6"
+							cellpadding="10" rendered="#{kalahManagedBean.started}">
+							<p:row>
+								<c:forEach items="#{kalahManagedBean.kalahBoard.player2.pits}"
+									var="pit">
+									<p:column>
+										<p:commandButton id="pit_#{pit.id}"
+											update="player1,player2,kalah1,kalah2,nextPlayer,winner"
+											actionListener="#{kalahManagedBean.pitClickAction}"
+											value="#{pit.countOfStones}"
+											style="width:100px;height:100px;color:yellow;background:#A67B7B">
+										</p:commandButton>
+									</p:column>
+								</c:forEach>
+							</p:row>
+						</p:panelGrid></td>
+				</tr>
+				<tr>
+
+					<td><p:panelGrid id="player1" columns="6" cellpadding="10"
+							rendered="#{kalahManagedBean.started}">
+
+							<p:row>
+								<c:forEach items="#{kalahManagedBean.kalahBoard.player1.pits}"
+									var="pit">
+									<p:column>
+										<p:commandButton id="pit_#{pit.id}"
+											update="player1,player2,kalah1,kalah2,nextPlayer,winner"
+											actionListener="#{kalahManagedBean.pitClickAction}"
+											value="#{pit.countOfStones}"
+											style="width:100px;height:100px;color:yellow;background:#A67B7B">
+										</p:commandButton>
+									</p:column>
+								</c:forEach>
+							</p:row>
+
+
+						</p:panelGrid></td>
+					<td><p:column>
+							<p:commandButton id="kalah1"
+								update="player1,player2,kalah1,kalah2"
+								value="#{kalahManagedBean.kalahBoard.player1.kalah.countOfStones}"
+								disabled="true" rendered="#{kalahManagedBean.started}"
+								style="width:100px;height:200px;color:yellow;background:#A67B7B">
+							</p:commandButton>
+						</p:column></td>
+				</tr>
+
+			</table>
+
+			<h2>
+
+				<p:outputLabel value="#{kalahManagedBean.kalahBoard.player1.name}"
+					rendered="#{kalahManagedBean.started}"></p:outputLabel>
+			</h2>
+
+		</div>
+
+
+
+
+	</p:panel>
+</h:form>
+</html>
