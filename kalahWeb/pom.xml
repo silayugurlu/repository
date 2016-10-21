@@ -87,6 +87,13 @@
 			<artifactId>el-impl</artifactId>
 			<version>2.2</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.9.5</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -111,10 +118,10 @@
 				<configuration>
 					<port>9090</port>
 					<path>/kalah</path>
-					 <url>http://localhost:9090/manager</url>
-                            <server>localhost</server>
+					<url>http://localhost:9090/manager</url>
+					<server>localhost</server>
 				</configuration>
-				 
+
 				<executions>
 					<execution>
 						<id>tomcat-run</id>

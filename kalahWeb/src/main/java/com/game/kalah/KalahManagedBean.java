@@ -55,15 +55,9 @@ public class KalahManagedBean {
 		int pitId = new Integer(ids[1]);
 
 		Player own = board.getNextPlayer();
-		Player opponent = null;
-		if(board.getPlayer1().getId() == own.getId()){
-			opponent = board.getPlayer2();
-		}else{
-			opponent = board.getPlayer1();
-		}
-		
+				
 		try {
-			kalahManager.move(board,own,opponent,pitId);	
+			kalahManager.move(board,own,pitId);	
 		} catch (KalahException e) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!",
 					e.getMessage()));

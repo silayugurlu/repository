@@ -99,5 +99,13 @@ public class KalahBoard {
 	public void setWinner(Player winner) {
 		this.winner = winner;
 	}
+	
+	public Player getOpponentPlayer(Player own){
+		if(getPlayer1().getId() == own.getId()){
+			return getPlayer2();
+		}else{
+			return getPlayer1();
+		}
+	}
 
 }

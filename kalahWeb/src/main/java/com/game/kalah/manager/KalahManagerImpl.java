@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.game.kalah.exception.KalahException;
 import com.game.kalah.exception.NoStoneFoundException;
 import com.game.kalah.exception.WrongSelectionException;
 import com.game.kalah.model.Kalah;
@@ -17,20 +16,9 @@ import com.game.kalah.model.Player;
 @Service
 public class KalahManagerImpl implements KalahManager {
 
-//	KalahBoard board;
 
 	/**
-	 * prepare Kalah board, initialize players and pits set pits to board and
-	 * sow to players with same index
-	 * 
-	 * @param playerName1
-	 *            name of the first player
-	 * @param playerName2
-	 *            name of the second player
-	 * @param countOfStones
-	 *            count of stones to put each pit
-	 * 
-	 * @return KalahBoard initial board contains players, pits and stones
+	 * {@inheritDoc}
 	 */
 	public KalahBoard prepareBoard(String playerName1, String playerName2, int countOfStones) {
 
@@ -67,20 +55,21 @@ public class KalahManagerImpl implements KalahManager {
 
 	/**
 	 * sows stones to pits , starting from following one. use id to find the
-	 * following pit. returns pit id that the last stone sowed.
+	 * following pit. returns pit id that the last stone lands.
 	 * 
-	 * @param own
-	 *            player
-	 * @param opponent
-	 *            player
-	 * @param pitId
-	 *            id of the selected pit
+	 * @param board kalah board instance 
+	 * 
+	 * @param own   player
+	 *    
+	 * @param pitId id of the selected pit
+	 * 
 	 * @return id of the pit that last stone lands
 	 * 
-	 * @throws WrongSelectionException
-	 * @throws NoStoneFoundException
+	 * @throws WrongSelectionException if selected pit belongs to other player
+	 * 
+	 * @throws NoStoneFoundException   if there is no stone in the selected pit
 	 */
-	public Pit sowStones(KalahBoard board, Player own, Player opponent, int pitId) throws WrongSelectionException, NoStoneFoundException {
+	public Pit sowStones(KalahBoard board, Player own,int pitId) throws WrongSelectionException, NoStoneFoundException {
 		List<Pit> pits = board.getPits();
 
 		Pit pit = pits.get(pitId); // get the selected pit
@@ -95,6 +84,7 @@ public class KalahManagerImpl implements KalahManager {
 			throw new NoStoneFoundException();
 		}
 
+		Player opponent = board.getOpponentPlayer(own);
 		Pit nextPit = null;
 		int pitsCount = pits.size();
 		for (int i = 0; i < countOfStones; i++) { // sow the stones
@@ -110,18 +100,22 @@ public class KalahManagerImpl implements KalahManager {
 	}
 
 	/**
-	 * pick up the stones from pit and opponent's pit then put to the Kalah
+	 * picks up the stones from own pit and opponent's pit then put to the own Kalah
 	 * 
-	 * @param own
-	 *            player
-	 * @param opponent
-	 *            opponent player
-	 * @param pitId
-	 *            id of the own selected pit
-	 * @throws WrongSelectionException
+	 * @param board    kalah board instance
+	 * 
+	 * @param own      player
+	 *            
+	 * @param opponent opponent player
+	 *            
+	 * @param pitId    id of the own selected pit
+	 * 
+	 * @throws WrongSelectionException if selected pit belongs to other player
 	 * 
 	 */
-	public void putStonestoKalah(KalahBoard board, Player own, Player opponent, int pitId) throws WrongSelectionException {
+	public void putStonestoKalah(KalahBoard board, Player own, int pitId) throws WrongSelectionException {
+		
+		
 		List<Pit> pits = board.getPits();
 		Pit pit = pits.get(pitId); // get the selected pit
 
@@ -129,16 +123,14 @@ public class KalahManagerImpl implements KalahManager {
 			throw new WrongSelectionException();
 		}
 
-		int indexOnOwnPlayer = own.getPitIndex(pit); // find index of pit on
+		int indexOnPlayer = own.getPitIndex(pit); // find index of pit on
 														// player
-//		int indexOnOpponentPlayer = 5 - indexOnOwnPlayer; // find index of pit
-															// on player
 
-		int ownPlayersStone = own.getPit(indexOnOwnPlayer).pickUpStones(); // pick
+		int ownPlayersStone = own.getPit(indexOnPlayer).pickUpStones(); // pick
 																			// up
-																			// own
+		Player opponent = board.getOpponentPlayer(own);																	// own
 																			// stones
-		int opponentPlayersStone = opponent.getPit(indexOnOwnPlayer).pickUpStones(); // pick
+		int opponentPlayersStone = opponent.getPit(indexOnPlayer).pickUpStones(); // pick
 																							// up
 																							// opponent's
 																							// stones
@@ -152,12 +144,12 @@ public class KalahManagerImpl implements KalahManager {
 	/**
 	 * finds id of the next pit, skipping opponent's kalah
 	 * 
-	 * @param opponent
-	 *            player is used to skip Kalah
-	 * @param pitId
-	 *            id of the selected pit
-	 * @param pitsCount
-	 *            total count of the pits
+	 * @param opponent  player is used to skip Kalah
+	 *            
+	 * @param pitId     id of the selected pit
+	 *            
+	 * @param pitsCount total count of the pits on board
+	 *            
 	 * @return next pit id
 	 */
 	private int findNextPit(Player opponent, int pitId, int pitsCount) {
@@ -169,46 +161,53 @@ public class KalahManagerImpl implements KalahManager {
 		return pitId;
 	}
 
-	public KalahBoard move(KalahBoard board, Player own, Player opponent, int pitId) throws WrongSelectionException, NoStoneFoundException {
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public KalahBoard move(KalahBoard board, Player own, int pitId) throws WrongSelectionException, NoStoneFoundException {
+		Player opponent = board.getOpponentPlayer(own);
 		Player nextPlayer = opponent;
 
-		boolean finished = false;
+		boolean gameOver = false;
 		Player winner = null;
 
-		Pit last = sowStones(board, own, opponent, pitId);
+		//picks up all the stones in the selected own pit, and sows the stones
+		Pit last = sowStones(board, own, pitId);
 
-		// check if last stone is in empty pit or in the kalah to find the
+		// check if last stone lands in an own empty pit or in the kalah to find the
 		// next move
-		if (own.hasPit(last) && last.getCountOfStones() == 1) {
-			putStonestoKalah(board, own, opponent, last.getId());
-		} else if (own.isKalah(last)) {
-			nextPlayer = own;
+		if (own.hasPit(last) && last.getCountOfStones() == 1) { // last stone lands in own empty pit
+			putStonestoKalah(board, own, last.getId()); //captures last stone and all stones in the opposite pit and puts them in his own Kalah
+		} else if (own.isKalah(last)) { // last stone lands in own kalah
+			nextPlayer = own;  // he gets another turn
 		}
 
-		// check if one side is out of stones
+		// check if one side is out of stones and game is over
 		int stoneCountOwn = own.countStonesOnPits();
 		if (stoneCountOwn == 0) {
-			finished = true; // game over
+			gameOver = true; // game over
 			opponent.putAllStonesToKalah();
 		} else {
 			int stoneCountOpponent = opponent.countStonesOnPits();
-			if (stoneCountOwn == 0) {
-				finished = true; // game over
+			if (stoneCountOpponent == 0) {
+				gameOver = true; // game over
 				own.putAllStonesToKalah();
 			}
 		}
 
 		// if game is over, find the winner
-		if (finished) {
+		if (gameOver) {
 			int stoneCountKalahOwn = own.getKalah().getCountOfStones();
 
 			int stoneCountKalahOpponent = opponent.getKalah().getCountOfStones();
 
+			// The winner is the player who has the most stones in his Kalah.
 			winner = stoneCountKalahOwn > stoneCountKalahOpponent ? own : opponent;
 		}
 
 		board.setNextPlayer(nextPlayer);
-		board.setFinished(finished);
+		board.setFinished(gameOver);
 		board.setWinner(winner);
 
 		return board;

@@ -4,17 +4,22 @@ import com.game.kalah.exception.NoStoneFoundException;
 import com.game.kalah.exception.WrongSelectionException;
 import com.game.kalah.model.Kalah;
 import com.game.kalah.model.KalahBoard;
+import com.game.kalah.model.Player;
+
 import org.junit.Test;
+import org.mockito.Mockito;
+
+import static org.mockito.Mockito.*;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 
-public class KalahManagerTest {
+public class KalahManagerImplTest {
 
 	KalahBoard board;
 
-	KalahManager kalahManager;
+	KalahManagerImpl kalahManager;
 
 	@Before
 	public void setUp() {
@@ -51,7 +56,7 @@ public class KalahManagerTest {
 	@Test
 	public void testSowStones() throws WrongSelectionException, NoStoneFoundException {
 
-		kalahManager.sowStones(board, board.getPlayer1(), board.getPlayer2(), 2);
+		kalahManager.sowStones(board, board.getPlayer1(), 2);
 
 		assertEquals(0, board.getPits().get(2).getCountOfStones()); // get all
 																	// stones
@@ -73,52 +78,71 @@ public class KalahManagerTest {
 	public void testSowStonesSkipKalah() throws WrongSelectionException, NoStoneFoundException {
 		board = kalahManager.prepareBoard("player1", "player2", 9);
 
-		kalahManager.sowStones(board, board.getPlayer1(), board.getPlayer2(), 5);
+		kalahManager.sowStones(board, board.getPlayer1(), 5);
 
-		assertEquals(0, board.getPits().get(5).getCountOfStones()); // get all stones from pit5
+		assertEquals(0, board.getPits().get(5).getCountOfStones()); // get all
+																	// stones
+																	// from pit5
 		assertEquals(10, board.getPits().get(7).getCountOfStones());
-		
-		assertEquals(0, board.getPlayer2().getKalah().getCountOfStones()); // opponent's kalah																			
+
+		assertEquals(0, board.getPlayer2().getKalah().getCountOfStones()); // opponent's
+																			// kalah
 		assertEquals(10, board.getPlayer2().getPit(0).getCountOfStones());
 
 		assertEquals(1, board.getPlayer1().getKalah().getCountOfStones());
 		assertEquals(10, board.getPlayer1().getPit(0).getCountOfStones());
 
 	}
-	
 
 	@Test(expected = NoStoneFoundException.class)
 	public void testSowStonesNoSelection() throws WrongSelectionException, NoStoneFoundException {
-		kalahManager.sowStones(board, board.getPlayer1(), board.getPlayer2(), 2);
-		kalahManager.sowStones(board, board.getPlayer1(), board.getPlayer2(), 2);
+		kalahManager.sowStones(board, board.getPlayer1(), 2);
+		kalahManager.sowStones(board, board.getPlayer1(), 2);
 	}
-	
+
 	@Test(expected = WrongSelectionException.class)
 	public void testSowStonesException() throws WrongSelectionException, NoStoneFoundException {
-		kalahManager.sowStones(board,board.getPlayer2(), board.getPlayer1(), 2);
+		kalahManager.sowStones(board, board.getPlayer2(), 2);
 	}
-	
+
 	@Test(expected = WrongSelectionException.class)
 	public void testSowStonesExceptionKalah() throws WrongSelectionException, NoStoneFoundException {
-		kalahManager.sowStones(board,board.getPlayer2(), board.getPlayer1(), 13);
+		kalahManager.sowStones(board, board.getPlayer2(), 13);
 	}
 
 	@Test
 	public void testPutStonesToKalah() throws WrongSelectionException {
-		kalahManager.putStonestoKalah(board,board.getPlayer2(), board.getPlayer1(), 9);
+		kalahManager.putStonestoKalah(board, board.getPlayer2(), 9);
 		assertEquals(0, board.getPits().get(9).getCountOfStones());
 		assertEquals(0, board.getPits().get(3).getCountOfStones());
 		assertEquals(12, board.getPlayer2().getKalah().getCountOfStones());
 
 	}
-	
+
 	@Test(expected = WrongSelectionException.class)
 	public void testPutStonesToKalahWrongSelection() throws WrongSelectionException, NoStoneFoundException {
-		kalahManager.sowStones(board,board.getPlayer1(), board.getPlayer2(), 7);
+		kalahManager.sowStones(board, board.getPlayer1(), 7);
 	}
 
 	@Test(expected = WrongSelectionException.class)
 	public void testPutStonesWrongSelection() throws WrongSelectionException, NoStoneFoundException {
-		kalahManager.sowStones(board, board.getPlayer1(), board.getPlayer2(), 6);
+		kalahManager.sowStones(board, board.getPlayer1(), 6);
 	}
+
+	@Test
+	public void test1() {
+		Player player1 = Mockito.mock(Player.class);
+		when(player1.countStonesOnPits()).thenReturn(0);
+		
+		Player player2 = Mockito.mock(Player.class);
+		when(player2.countStonesOnPits()).thenReturn(0);
+		// create mock
+		KalahBoard board = Mockito.mock(KalahBoard.class);
+
+		// define return value for method getUniqueId()
+		when(board.getPlayer1()).thenReturn(player1);
+		when(board.getPlayer2()).thenReturn(player2);
+
+	}
+
 }
