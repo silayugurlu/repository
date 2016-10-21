@@ -1,5 +1,6 @@
 package com.game.kalah.manager;
 
+import com.game.kalah.exception.KalahSelectedException;
 import com.game.kalah.exception.NoStoneFoundException;
 import com.game.kalah.exception.WrongSelectionException;
 import com.game.kalah.model.KalahBoard;
@@ -46,9 +47,11 @@ public interface KalahManager {
 	 * @return board  updated kalah board
 	 * 
 	 * @throws WrongSelectionException if selected pit belongs to other player
+	 * 
 	 * @throws NoStoneFoundException   if there is no stone in the selected pit 
 	 * 
+	 * @throws KalahSelectedException if selected pit is Kalah
 	 */
-	KalahBoard move(KalahBoard board,Player player, int pitId) throws WrongSelectionException, NoStoneFoundException;
+	KalahBoard move(KalahBoard board,Player player, int pitId) throws WrongSelectionException, NoStoneFoundException, KalahSelectedException;
 
 }

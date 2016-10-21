@@ -13,7 +13,7 @@ public class KalahBoard {
 
 	Player nextPlayer;
 
-	boolean finished;
+	boolean gameOver;
 
 	Player winner;
 
@@ -71,21 +71,6 @@ public class KalahBoard {
 	}
 
 	/**
-	 * @return the finished
-	 */
-	public boolean isFinished() {
-		return finished;
-	}
-
-	/**
-	 * @param finished
-	 *            the finished to set
-	 */
-	public void setFinished(boolean finished) {
-		this.finished = finished;
-	}
-
-	/**
 	 * @return the winner
 	 */
 	public Player getWinner() {
@@ -99,11 +84,27 @@ public class KalahBoard {
 	public void setWinner(Player winner) {
 		this.winner = winner;
 	}
-	
-	public Player getOpponentPlayer(Player own){
-		if(getPlayer1().getId() == own.getId()){
+
+	/**
+	 * 
+	 * @return gameOver
+	 */
+	public boolean isGameOver() {
+		return gameOver;
+	}
+
+	/**
+	 * 
+	 * @param gameOver
+	 */
+	public void setGameOver(boolean gameOver) {
+		this.gameOver = gameOver;
+	}
+
+	public Player getOpponentPlayer(Player own) {
+		if (getPlayer1().getId() == own.getId()) {
 			return getPlayer2();
-		}else{
+		} else {
 			return getPlayer1();
 		}
 	}

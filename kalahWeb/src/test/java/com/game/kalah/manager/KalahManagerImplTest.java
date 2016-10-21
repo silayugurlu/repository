@@ -1,19 +1,19 @@
 package com.game.kalah.manager;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import com.game.kalah.exception.KalahException;
+import com.game.kalah.exception.KalahSelectedException;
 import com.game.kalah.exception.NoStoneFoundException;
 import com.game.kalah.exception.WrongSelectionException;
 import com.game.kalah.model.Kalah;
 import com.game.kalah.model.KalahBoard;
+import com.game.kalah.model.Pit;
 import com.game.kalah.model.Player;
-
-import org.junit.Test;
-import org.mockito.Mockito;
-
-import static org.mockito.Mockito.*;
-
-import static org.junit.Assert.*;
-
-import org.junit.Before;
 
 public class KalahManagerImplTest {
 
@@ -54,7 +54,7 @@ public class KalahManagerImplTest {
 	}
 
 	@Test
-	public void testSowStones() throws WrongSelectionException, NoStoneFoundException {
+	public void testSowStones() throws KalahException {
 
 		kalahManager.sowStones(board, board.getPlayer1(), 2);
 
@@ -75,7 +75,7 @@ public class KalahManagerImplTest {
 	}
 
 	@Test
-	public void testSowStonesSkipKalah() throws WrongSelectionException, NoStoneFoundException {
+	public void testSowStonesSkipKalah() throws KalahException {
 		board = kalahManager.prepareBoard("player1", "player2", 9);
 
 		kalahManager.sowStones(board, board.getPlayer1(), 5);
@@ -95,18 +95,18 @@ public class KalahManagerImplTest {
 	}
 
 	@Test(expected = NoStoneFoundException.class)
-	public void testSowStonesNoSelection() throws WrongSelectionException, NoStoneFoundException {
+	public void testSowStonesNoSelection() throws KalahException {
 		kalahManager.sowStones(board, board.getPlayer1(), 2);
 		kalahManager.sowStones(board, board.getPlayer1(), 2);
 	}
 
 	@Test(expected = WrongSelectionException.class)
-	public void testSowStonesException() throws WrongSelectionException, NoStoneFoundException {
+	public void testSowStonesException() throws KalahException {
 		kalahManager.sowStones(board, board.getPlayer2(), 2);
 	}
 
-	@Test(expected = WrongSelectionException.class)
-	public void testSowStonesExceptionKalah() throws WrongSelectionException, NoStoneFoundException {
+	@Test(expected = KalahSelectedException.class)
+	public void testSowStonesExceptionKalah() throws KalahException {
 		kalahManager.sowStones(board, board.getPlayer2(), 13);
 	}
 
@@ -120,29 +120,78 @@ public class KalahManagerImplTest {
 	}
 
 	@Test(expected = WrongSelectionException.class)
-	public void testPutStonesToKalahWrongSelection() throws WrongSelectionException, NoStoneFoundException {
+	public void testPutStonesToKalahWrongSelection() throws KalahException {
 		kalahManager.sowStones(board, board.getPlayer1(), 7);
 	}
 
-	@Test(expected = WrongSelectionException.class)
-	public void testPutStonesWrongSelection() throws WrongSelectionException, NoStoneFoundException {
+	@Test(expected = KalahSelectedException.class)
+	public void testPutStonesWrongSelection() throws KalahException {
 		kalahManager.sowStones(board, board.getPlayer1(), 6);
 	}
 
+	
 	@Test
-	public void test1() {
-		Player player1 = Mockito.mock(Player.class);
-		when(player1.countStonesOnPits()).thenReturn(0);
+	public void testNextMovement() throws KalahException {
+		KalahBoard board = kalahManager.prepareBoard("player1", "player2", 1);
+		Player firstPlayer = board.getNextPlayer();
+		Player secondPlayer = board.getOpponentPlayer(firstPlayer);
 		
-		Player player2 = Mockito.mock(Player.class);
-		when(player2.countStonesOnPits()).thenReturn(0);
-		// create mock
-		KalahBoard board = Mockito.mock(KalahBoard.class);
+		/**
+		 *    1  1  1  1  1  1
+		 * 0                   0
+		 *    1  1  1  1  1  1  
+		 */
+		
+		int moveId= firstPlayer.getKalah().getId()-1;
+		
+		kalahManager.move(board, firstPlayer, moveId);
+		
+		assertEquals(firstPlayer, board.getNextPlayer());
+		assertEquals(0, board.getPits().get(moveId).getCountOfStones());
+		assertEquals(false, board.isGameOver());
+		/**
+		 *    1  1  1  1  1  1
+		 * 0                   1
+		 *    1  1  1  1  1  0  
+		 */
+		
 
-		// define return value for method getUniqueId()
-		when(board.getPlayer1()).thenReturn(player1);
-		when(board.getPlayer2()).thenReturn(player2);
+		kalahManager.move(board, firstPlayer, moveId-1);
+		assertEquals(3, firstPlayer.getKalah().getCountOfStones());
+		assertEquals(0, board.getPits().get(moveId).getCountOfStones());
+		assertEquals(secondPlayer, board.getNextPlayer());
+		assertEquals(false, board.isGameOver());
+	}
+	
+	@Test
+	public void testGameOver() throws KalahException {
+		KalahBoard board = kalahManager.prepareBoard("player1", "player2", 1);
+		Player firstPlayer = board.getNextPlayer();
+		Player secondPlayer = board.getOpponentPlayer(firstPlayer);
 
+		for(Pit pit :firstPlayer.getPits()){
+			pit.setCountOfStones(2);
+		}
+		for(Pit pit :secondPlayer.getPits()){
+			pit.setCountOfStones(0);
+		}
+
+		/**
+		 *    2  2  2  2  2  2
+		 * 0                   0
+		 *    0  0  0  0  0  0  
+		 */
+		
+		int moveId= firstPlayer.getKalah().getId()-5;
+		
+		kalahManager.move(board, firstPlayer, moveId);
+		
+
+		assertEquals(12, firstPlayer.getKalah().getCountOfStones());
+		assertEquals(0, secondPlayer.getKalah().getCountOfStones());
+		assertEquals(true, board.isGameOver());
+		assertEquals(firstPlayer, board.getWinner());
+		
 	}
 
 }

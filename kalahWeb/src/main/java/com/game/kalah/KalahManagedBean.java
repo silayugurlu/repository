@@ -26,9 +26,6 @@ public class KalahManagedBean {
 
 	private boolean started = false;
 
-	/**
-	 * spring jsf integration....
-	 */
 	@ManagedProperty("#{kalahManagerImpl}")
 	private KalahManager kalahManager;
 
@@ -116,10 +113,18 @@ public class KalahManagedBean {
 		this.kalahManager = kalahManager;
 	}
 
+	/**
+	 * 
+	 * @return started
+	 */
 	public boolean isStarted() {
 		return started;
 	}
 
+	/**
+	 * 
+	 * @param started
+	 */
 	public void setStarted(boolean started) {
 		this.started = started;
 	}

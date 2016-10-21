@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.game.kalah.exception.KalahSelectedException;
 import com.game.kalah.exception.NoStoneFoundException;
 import com.game.kalah.exception.WrongSelectionException;
 import com.game.kalah.model.Kalah;
@@ -68,12 +69,17 @@ public class KalahManagerImpl implements KalahManager {
 	 * @throws WrongSelectionException if selected pit belongs to other player
 	 * 
 	 * @throws NoStoneFoundException   if there is no stone in the selected pit
+	 * @throws KalahSelectedException 
 	 */
-	public Pit sowStones(KalahBoard board, Player own,int pitId) throws WrongSelectionException, NoStoneFoundException {
+	public Pit sowStones(KalahBoard board, Player own,int pitId) throws WrongSelectionException, NoStoneFoundException, KalahSelectedException {
 		List<Pit> pits = board.getPits();
 
 		Pit pit = pits.get(pitId); // get the selected pit
 
+		if(pit instanceof Kalah){
+			throw new KalahSelectedException();
+		}
+		
 		if (!own.hasPit(pit)) { // opponent's pit is selected
 			throw new WrongSelectionException();
 		}
@@ -164,8 +170,9 @@ public class KalahManagerImpl implements KalahManager {
 
 	/**
 	 * {@inheritDoc}
+	 * @throws KalahSelectedException 
 	 */
-	public KalahBoard move(KalahBoard board, Player own, int pitId) throws WrongSelectionException, NoStoneFoundException {
+	public KalahBoard move(KalahBoard board, Player own, int pitId) throws WrongSelectionException, NoStoneFoundException, KalahSelectedException {
 		Player opponent = board.getOpponentPlayer(own);
 		Player nextPlayer = opponent;
 
@@ -207,7 +214,7 @@ public class KalahManagerImpl implements KalahManager {
 		}
 
 		board.setNextPlayer(nextPlayer);
-		board.setFinished(gameOver);
+		board.setGameOver(gameOver);
 		board.setWinner(winner);
 
 		return board;
