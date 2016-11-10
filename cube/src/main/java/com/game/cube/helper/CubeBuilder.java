@@ -29,9 +29,10 @@ public class CubeBuilder {
 		for (int i = 1; i < 6; i++) {
 
 			Piece piece = pieces[i];
-			//			if(helper.checkPiecesMatched(root.getPiece(), piece){
-			//				
-			//			}
+			Piece result = findMatchedPieces(root.getPiece(),piece);
+			if(result!=null){
+				break;
+			}
 		}
 		return null;
 	}
