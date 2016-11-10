@@ -2,25 +2,29 @@ package com.game.cube.model;
 
 public class Piece {
 
-	private int id;
+	private PieceId id;
 	private int[][] nodes;
+	
+	public Piece() {
+		super();
+	}
 
-	public Piece(int id) {
+	public Piece(PieceId id) {
 		super();
 		this.id = id;
 	}
 
-	public Piece(int id, int[][] nodes) {
+	public Piece(PieceId id, int[][] nodes) {
 		super();
 		this.id = id;
 		this.nodes = nodes;
 	}
 
-	public int getId() {
+	public PieceId getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(PieceId id) {
 		this.id = id;
 	}
 

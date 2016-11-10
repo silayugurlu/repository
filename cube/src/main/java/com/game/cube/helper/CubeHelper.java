@@ -64,5 +64,21 @@ public class CubeHelper {
 		nodes[4] = m[0];
 		return nodes;
 	}
+	
+	
+	public boolean checkPiecesSame(Piece piece1, Piece piece2) {
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 5; j++) {
+				if(piece1.getNodes()[i][j] != piece2.getNodes()[i][j]){
+					return false;
+				}
+			}
+		}
+		
+		return true;
+
+	}
+	
+	
 
 }
