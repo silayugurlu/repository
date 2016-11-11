@@ -43,7 +43,18 @@ public class PieceId {
 		this.mirror = mirror;
 	}
 
-
+	@Override
+	public int hashCode(){
+		return id;
+	}
+	@Override
+	public boolean equals(Object obj){
+		if(obj == null){
+			return false;
+		}
+		PieceId param =(PieceId)obj;
+		return this.id == param.getId();
+	}
 	
 	
 

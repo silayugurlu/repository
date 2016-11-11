@@ -3,30 +3,29 @@ package com.game.cube.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatchedPiece {
+public class MatchedPiece extends Piece{
 
-	private Piece piece;
+//	private Piece piece;
 
 	private List<MatchedPiece> matchedPieces;
 
 	public MatchedPiece(Piece piece) {
-		super();
-		this.piece = piece;
+		super(piece.getId(),piece.getNodes());
+//		this.piece = piece;
 	}
 
 	public MatchedPiece(Piece piece, List<MatchedPiece> matchedPieces) {
-		super();
-		this.piece = piece;
+		this(piece);
 		this.matchedPieces = matchedPieces;
 	}
 
-	public Piece getPiece() {
-		return piece;
-	}
-
-	public void setPiece(Piece piece) {
-		this.piece = piece;
-	}
+//	public Piece getPiece() {
+//		return piece;
+//	}
+//
+//	public void setPiece(Piece piece) {
+//		this.piece = piece;
+//	}
 
 	public List<MatchedPiece> getMatchedPieces() {
 		return matchedPieces;
@@ -42,6 +41,8 @@ public class MatchedPiece {
 		}
 		this.matchedPieces.add(matchedPiece);
 	}
+	
+//	public 
 
 
 }

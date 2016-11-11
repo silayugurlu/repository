@@ -43,4 +43,17 @@ public class Piece {
 		}
 		return line;
 	}
+	
+	@Override
+	public int hashCode(){
+		return id.hashCode();
+	}
+	@Override
+	public boolean equals(Object obj){
+		if(obj == null){
+			return false;
+		}
+		Piece param =(Piece)obj;
+		return this.id.equals(param.getId());
+	}
 }
