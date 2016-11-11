@@ -1,5 +1,8 @@
 package com.game.cube.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Piece {
 
 	private PieceId id;
@@ -55,5 +58,31 @@ public class Piece {
 		}
 		Piece param =(Piece)obj;
 		return this.id.equals(param.getId());
+	}
+	
+	
+
+	public List<String> toStringList() {
+		List<String> list = new ArrayList<String>();
+		String node = "";
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 5; j++) {
+
+				node += (nodes[i][j] == 1 ? "[]" : "  ");
+			}
+
+			list.add(node);
+			node = "";
+		}
+		return list;
+	}
+
+	public String convertLineString(int index) {
+		String node = "";
+		for (int j = 0; j < 5; j++) {
+
+			node += (nodes[index][j] == 1 ? "[]" : "  ");
+		}
+		return node;
 	}
 }

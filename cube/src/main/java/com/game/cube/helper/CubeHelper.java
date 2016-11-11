@@ -20,16 +20,16 @@ public class CubeHelper {
 	 * @return
 	 */
 
-	public boolean checkPiecesMatched(Piece piece1, Piece piece2) {
-		int vertice1 = piece1.getNodes()[4][0] & piece2.getNodes()[0][0];
-		int vertice2 = piece1.getNodes()[4][4] & piece2.getNodes()[0][4];
+	public boolean checkPiecesMatched(Piece piece, Piece pieceToTry) {
+		int vertice1 = piece.getNodes()[4][0] & pieceToTry.getNodes()[0][0];
+		int vertice2 = piece.getNodes()[4][4] & pieceToTry.getNodes()[0][4];
 		
 		//check vertices
 		if (vertice1 == 0 && vertice2 == 0) {
 			
 			//check edges
 			for (int j = 1; j < 4; j++) {
-				int result = piece1.getNodes()[4][j] ^ piece2.getNodes()[0][j];
+				int result = piece.getNodes()[4][j] ^ pieceToTry.getNodes()[0][j];
 				if(result != 1){
 					return false;
 				}
@@ -41,6 +41,61 @@ public class CubeHelper {
 		return true;
 
 	}
+	
+	public boolean checkPiecesMatchedOn4Side(Piece pieceToTry, Piece piece1, Piece piece2, Piece piece3, Piece piece4) {
+		int vertice1 = piece1.getNodes()[0][0] + piece4.getNodes()[4][0] + pieceToTry.getNodes()[0][4];
+		int vertice2 = piece2.getNodes()[0][0] + piece1.getNodes()[4][0] + pieceToTry.getNodes()[4][4];
+		int vertice3 = piece3.getNodes()[0][0] + piece2.getNodes()[4][0] + pieceToTry.getNodes()[4][0];
+		int vertice4 = piece4.getNodes()[0][0] + piece3.getNodes()[4][0] + pieceToTry.getNodes()[0][0];
+		
+		//check vertices
+		if (vertice1 == 1 && vertice2 == 1 && vertice3 == 1 && vertice4 == 1) {
+			
+			//check edges
+			for (int j = 1; j < 4; j++) {
+				int result = pieceToTry.getNodes()[j][4] ^ piece1.getNodes()[j][0];
+				result &= pieceToTry.getNodes()[4][4-j] ^ piece2.getNodes()[j][0];
+				result &= pieceToTry.getNodes()[4-j][0] ^ piece3.getNodes()[j][0];
+				result &= pieceToTry.getNodes()[0][j] ^ piece4.getNodes()[j][0];
+				if(result != 1){
+					return false;
+				}
+			}			
+		}else{
+			return false;
+		}
+		
+		return true;
+
+	}
+	
+	public boolean checkPiecesMatchedOnOther4Side(Piece pieceToTry, Piece piece1, Piece piece2, Piece piece3, Piece piece4) {
+		int vertice1 = piece1.getNodes()[0][4] + piece4.getNodes()[4][4] + pieceToTry.getNodes()[0][0];
+		int vertice2 = piece2.getNodes()[0][4] + piece1.getNodes()[4][4] + pieceToTry.getNodes()[4][0];
+		int vertice3 = piece3.getNodes()[0][4] + piece2.getNodes()[4][4] + pieceToTry.getNodes()[4][4];
+		int vertice4 = piece4.getNodes()[0][4] + piece3.getNodes()[4][4] + pieceToTry.getNodes()[0][4];
+		
+		//check vertices
+		if (vertice1 == 1 && vertice2 == 1 && vertice3 == 1 && vertice4 == 1) {
+			
+			//check edges
+			for (int j = 1; j < 4; j++) {
+				int result = pieceToTry.getNodes()[j][0] ^ piece1.getNodes()[j][4];
+				result &= pieceToTry.getNodes()[4][j] ^ piece2.getNodes()[j][4];
+				result &= pieceToTry.getNodes()[4-j][4] ^ piece3.getNodes()[j][4];
+				result &= pieceToTry.getNodes()[0][4-j] ^ piece4.getNodes()[j][4];
+				if(result != 1){
+					return false;
+				}
+			}			
+		}else{
+			return false;
+		}
+		
+		return true;
+
+	}
+
 
 	public int[][] rotatePiece(int[][] m) {
 		int[][] nodes = new int[5][];

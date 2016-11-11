@@ -22,9 +22,9 @@ public class CubeBuilderTest {
 				{ 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 } });
 		
 		MatchedPiece root = new MatchedPiece(piece1);
-		MatchedPiece piece = builder.findPieceMatch(root, piece2);
+		builder.findPieceMatchInLine(root, piece2);
 		
-		MatchedPiece result = piece.getMatchedPieces().get(0);
+		MatchedPiece result = root.getMatchedPieces().get(0);
 		assertEquals(2 , result.getId().getId());
 		assertEquals(0 , result.getId().getRotation());
 		assertTrue(!result.getId().isMirror());
@@ -45,9 +45,9 @@ public class CubeBuilderTest {
 		
 		
 		MatchedPiece root = new MatchedPiece(piece1);
-		MatchedPiece piece = builder.findPieceMatch(root, piece2);
+		builder.findPieceMatchInLine(root, piece2);
 		
-		MatchedPiece result = piece.getMatchedPieces().get(0);		
+		MatchedPiece result = root.getMatchedPieces().get(0);		
 		
 		assertEquals(2 , result.getId().getId());
 		assertEquals(3 , result.getId().getRotation());
@@ -69,9 +69,9 @@ public class CubeBuilderTest {
 		
 		
 		MatchedPiece root = new MatchedPiece(piece1);
-		MatchedPiece piece = builder.findPieceMatch(root, piece2);
+		builder.findPieceMatchInLine(root, piece2);
 		
-		MatchedPiece result = piece.getMatchedPieces().get(0);	
+		MatchedPiece result = root.getMatchedPieces().get(0);	
 		
 		assertEquals(2 , result.getId().getId());
 		assertEquals(3 , result.getId().getRotation());
@@ -90,9 +90,9 @@ public class CubeBuilderTest {
 		
 
 		MatchedPiece root = new MatchedPiece(piece1);
-		MatchedPiece piece = builder.findPieceMatch(root, piece2);
+		builder.findPieceMatchInLine(root, piece2);
 		
-		assertNull(piece.getMatchedPieces());
+		assertNull(root.getMatchedPieces());
 	}
 
 
