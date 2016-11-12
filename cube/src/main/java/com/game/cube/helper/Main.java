@@ -53,9 +53,11 @@ public class Main {
 		CubeBuilder m = new CubeBuilder();
 
 		Piece[] pieces = prepareData();
-
+		long startTime = System.currentTimeMillis();
 		MatchedPiece matchedPiece = m.buildCube(Arrays.asList(pieces));
+		long endTime = System.currentTimeMillis();
 		
+		System.out.println((endTime-startTime)/1000);
 		Piece[] result = new Piece[6];
 		int counter = 0;
 		int index = 0;
@@ -70,8 +72,6 @@ public class Main {
 			}
 			counter++;
 		}
-		
-		System.out.println(pieces[0].toStringList().get(0));
 
 		List<String> lines = new ArrayList<String>();
 
