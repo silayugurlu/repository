@@ -9,6 +9,7 @@ import static org.junit.Assert.*;
 
 import com.game.cube.helper.CubeHelper;
 import com.game.cube.model.Piece;
+import com.game.cube.model.PieceId;
 
 public class CubeHelperTest {
 
@@ -16,82 +17,43 @@ public class CubeHelperTest {
 
 	@Test
 	public void testPieceMatch() {
-		Piece piece1 = Mockito.mock(Piece.class);
-		Piece piece2 = Mockito.mock(Piece.class);
-
-		 
-		when(piece1.getNodes()).thenReturn(new int[][] { { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 },
+		Piece piece1 = new Piece(new PieceId(1), new int[][] { { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 },
 				{ 1, 1, 1, 1, 1 }, { 0, 0, 1, 0, 0 } });
-
-		when(piece2.getNodes()).thenReturn(new int[][] { { 0, 1, 0, 1, 0 }, { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 },
+		Piece piece2 = new Piece(new PieceId(2), new int[][] { { 0, 1, 0, 1, 0 }, { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 },
 				{ 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 } });
-
-		
-		assertTrue(helper.checkPiecesMatched(piece1, piece2));
+		assertTrue(helper.checkTwoEdgesMatch(piece1.getEdge(2), piece2.getEdge(0), true));
+		assertTrue(helper.checkTwoEdgesMatch(piece1.getEdge(2), piece2.getEdge(0), false));
 	}
 
 	@Test
 	public void testPieceMatchBoth() {
-		Piece piece1 = Mockito.mock(Piece.class);
-		Piece piece2 = Mockito.mock(Piece.class);
-
-		 
-		when(piece1.getNodes()).thenReturn(new int[][] { { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 },
-				{ 1, 1, 1, 1, 1 }, { 1, 0, 1, 0, 1 } });
-
-		when(piece2.getNodes()).thenReturn(new int[][] { { 0, 1, 0, 1, 0 }, { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 },
+		Piece piece1 = new Piece(new PieceId(1), new int[][] { { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 },
+				{ 1, 1, 1, 1, 1 }, { 1, 1, 1, 0, 1 } });
+		Piece piece2 = new Piece(new PieceId(2), new int[][] { { 0, 0, 0, 1, 0 }, { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 },
 				{ 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 } });
 
-		
-		assertTrue(helper.checkPiecesMatched(piece1, piece2));
+		assertTrue(helper.checkTwoEdgesMatch(piece1.getEdge(2), piece2.getEdge(0), true));
 	}
 
 	@Test
 	public void testPieceNotMatchVertice() {
-		Piece piece1 = Mockito.mock(Piece.class);
-		Piece piece2 = Mockito.mock(Piece.class);
-
-		 
-		when(piece1.getNodes()).thenReturn(new int[][] { { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 },
+		Piece piece1 = new Piece(new PieceId(1), new int[][] { { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 },
 				{ 1, 1, 1, 1, 1 }, { 1, 0, 1, 0, 1 } });
-
-		when(piece2.getNodes()).thenReturn(new int[][] { { 1, 1, 0, 1, 0 }, { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 },
+		Piece piece2 = new Piece(new PieceId(2), new int[][] { { 1, 1, 0, 1, 0 }, { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 },
 				{ 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 } });
 
-		
-		assertTrue(!helper.checkPiecesMatched(piece1, piece2));
+		assertTrue(!helper.checkTwoEdgesMatch(piece1.getEdge(2), piece2.getEdge(0), true));
 	}
 
-	@Test
-	public void testPieceNotMatchOtherVertice() {
-		Piece piece1 = Mockito.mock(Piece.class);
-		Piece piece2 = Mockito.mock(Piece.class);
-
-		
-		when(piece1.getNodes()).thenReturn(new int[][] { { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 },
-				{ 1, 1, 1, 1, 1 }, { 1, 0, 1, 0, 1 } });
-
-		when(piece2.getNodes()).thenReturn(new int[][] { { 0, 1, 0, 1, 1 }, { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 },
-				{ 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 } });
-
-	
-		assertTrue(!helper.checkPiecesMatched(piece1, piece2));
-	}
 
 	@Test
 	public void testPieceNotMatchEdge() {
-		Piece piece1 = Mockito.mock(Piece.class);
-		Piece piece2 = Mockito.mock(Piece.class);
-
-		 
-		when(piece1.getNodes()).thenReturn(new int[][] { { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 },
+		Piece piece1 = new Piece(new PieceId(1), new int[][] { { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 },
 				{ 1, 1, 1, 1, 1 }, { 1, 0, 1, 0, 1 } });
-
-		when(piece2.getNodes()).thenReturn(new int[][] { { 0, 0, 0, 1, 0 }, { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 },
+		Piece piece2 = new Piece(new PieceId(2), new int[][] { { 0, 0, 0, 1, 0 }, { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 },
 				{ 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 } });
 
-		
-		assertTrue(!helper.checkPiecesMatched(piece1, piece2));
+		assertTrue(!helper.checkTwoEdgesMatch(piece1.getEdge(2), piece2.getEdge(0), true));
 	}
 
 	@Test
@@ -110,6 +72,7 @@ public class CubeHelperTest {
 			}
 		}
 	}
+	
 
 	@Test
 	public void testMirrorPiece() {
@@ -142,33 +105,31 @@ public class CubeHelperTest {
 
 	@Test
 	public void testSame() {
-		
+
 		Piece piece1 = Mockito.mock(Piece.class);
 		Piece piece2 = Mockito.mock(Piece.class);
 
-		 
-		when(piece1.getNodes()).thenReturn(new int[][] { { 26, 2, 3, 4, 5 }, { 6, 1, 1, 1, 10 }, { 11, 1, 1, 1, 15 }, { 16, 1, 1, 1, 20 },
-			{ 21, 22, 23, 24, 25 } });
+		when(piece1.getNodes()).thenReturn(new int[][] { { 26, 2, 3, 4, 5 }, { 6, 1, 1, 1, 10 }, { 11, 1, 1, 1, 15 },
+				{ 16, 1, 1, 1, 20 }, { 21, 22, 23, 24, 25 } });
 
-		when(piece2.getNodes()).thenReturn(new int[][] { { 26, 2, 3, 4, 5 }, { 6, 1, 1, 1, 10 }, { 11, 1, 1, 1, 15 }, { 16, 1, 1, 1, 20 },
-			{ 21, 22, 23, 24, 25 }} );
+		when(piece2.getNodes()).thenReturn(new int[][] { { 26, 2, 3, 4, 5 }, { 6, 1, 1, 1, 10 }, { 11, 1, 1, 1, 15 },
+				{ 16, 1, 1, 1, 20 }, { 21, 22, 23, 24, 25 } });
 
 		assertTrue(helper.checkPiecesSame(piece1, piece2));
 
 	}
-	
+
 	@Test
 	public void testNotSame() {
-		
+
 		Piece piece1 = Mockito.mock(Piece.class);
 		Piece piece2 = Mockito.mock(Piece.class);
 
-		 
-		when(piece1.getNodes()).thenReturn(new int[][] { { 26, 2, 3, 4, 5 }, { 6, 1, 1, 1, 10 }, { 11, 1, 1, 1, 15 }, { 11, 1, 1, 1, 20 },
-			{ 21, 22, 23, 24, 25 } });
+		when(piece1.getNodes()).thenReturn(new int[][] { { 26, 2, 3, 4, 5 }, { 6, 1, 1, 1, 10 }, { 11, 1, 1, 1, 15 },
+				{ 11, 1, 1, 1, 20 }, { 21, 22, 23, 24, 25 } });
 
-		when(piece2.getNodes()).thenReturn(new int[][] { { 26, 2, 3, 4, 5 }, { 6, 1, 1, 1, 10 }, { 11, 1, 1, 1, 15 }, { 16, 1, 1, 1, 20 },
-			{ 21, 22, 23, 24, 25 }} );
+		when(piece2.getNodes()).thenReturn(new int[][] { { 26, 2, 3, 4, 5 }, { 6, 1, 1, 1, 10 }, { 11, 1, 1, 1, 15 },
+				{ 16, 1, 1, 1, 20 }, { 21, 22, 23, 24, 25 } });
 
 		assertTrue(!helper.checkPiecesSame(piece1, piece2));
 

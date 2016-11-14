@@ -49,26 +49,31 @@ public class Main {
 		Piece[] pieces = { piece1, piece2, piece3, piece4, piece5, piece6 };
 		return pieces;
 	}
+
 	public static void main(String[] args) {
 		CubeBuilder m = new CubeBuilder();
-
+		CubeHelper helper = new CubeHelper();
 		Piece[] pieces = prepareData();
 		long startTime = System.currentTimeMillis();
-		MatchedPiece matchedPiece = m.buildCube(Arrays.asList(pieces));
+		MatchedPiece matchedPiece = helper.buildCube(Arrays.asList(pieces));
 		long endTime = System.currentTimeMillis();
-		
-		System.out.println((endTime-startTime)/1000);
+
+		System.out.println((endTime - startTime) );
 		Piece[] result = new Piece[6];
 		int counter = 0;
 		int index = 0;
+		MatchedPiece root=matchedPiece;
 		while (matchedPiece != null) {
 			putArray(matchedPiece, result, counter);
 			if (matchedPiece.getMatchedPieces() != null && !matchedPiece.getMatchedPieces().isEmpty()) {
 				matchedPiece = matchedPiece.getMatchedPieces().get(0);
 			} else {
-
-				matchedPiece = null;
-
+//				if (counter == 5) {
+					matchedPiece = null;
+//				}else{
+//					matchedPiece = root;
+//					counter =0;
+//				}
 			}
 			counter++;
 		}
@@ -78,9 +83,9 @@ public class Main {
 		for (int i = 0; i < 5; i++) {
 			String line = result[0].convertLineString(i) + result[1].convertLineString(i)
 					+ result[2].convertLineString(i);
-			
-//			String line =  result[1].convertLineString(i);
-					
+
+			// String line = result[1].convertLineString(i);
+
 			lines.add(line);
 		}
 
@@ -102,7 +107,7 @@ public class Main {
 		// // TODO Auto-generated method stub
 
 	}
-	
+
 	private static void putArray(MatchedPiece matchedPiece, Piece[] result, int counter) {
 		if (counter == 0) {
 			result[1] = matchedPiece;

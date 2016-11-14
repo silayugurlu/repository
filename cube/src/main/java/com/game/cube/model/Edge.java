@@ -3,14 +3,15 @@ package com.game.cube.model;
 public class Edge {
 
 	private int startVertice;
-	
-	private int value;
-	
-	private int endVertice;
-	
-	private int reverseValue;
-	
 
+	private int value;
+
+	private int endVertice;
+
+	private int reverseValue;
+
+	private int key;
+	
 	public Edge() {
 		super();
 	}
@@ -20,11 +21,14 @@ public class Edge {
 		this.startVertice = startVertice;
 		this.value = value;
 		this.endVertice = endVertice;
-		if(value>3){
-			this.reverseValue = value-3;
-		}else{
-			this.reverseValue = value+3;
+		if (value == 2 || value == 5) {
+			this.reverseValue = value;
+		}else if (value > 3) {
+			this.reverseValue = value - 3;
+		} else {
+			this.reverseValue = value + 3;
 		}
+		key = this.startVertice* 8 + this.value  + this.endVertice *16;  
 	}
 
 	/**
@@ -35,7 +39,8 @@ public class Edge {
 	}
 
 	/**
-	 * @param startVertice the startVertice to set
+	 * @param startVertice
+	 *            the startVertice to set
 	 */
 	public void setStartVertice(int startVertice) {
 		this.startVertice = startVertice;
@@ -49,7 +54,8 @@ public class Edge {
 	}
 
 	/**
-	 * @param value the value to set
+	 * @param value
+	 *            the value to set
 	 */
 	public void setValue(int value) {
 		this.value = value;
@@ -63,7 +69,8 @@ public class Edge {
 	}
 
 	/**
-	 * @param endVertice the endVertice to set
+	 * @param endVertice
+	 *            the endVertice to set
 	 */
 	public void setEndVertice(int endVertice) {
 		this.endVertice = endVertice;
@@ -77,12 +84,26 @@ public class Edge {
 	}
 
 	/**
-	 * @param reverseValue the reverseValue to set
+	 * @param reverseValue
+	 *            the reverseValue to set
 	 */
 	public void setReverseValue(int reverseValue) {
 		this.reverseValue = reverseValue;
 	}
-	
-	
-	
+
+	@Override
+	public int hashCode() {
+		return key;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		Edge param = (Edge) obj;
+		return this.startVertice == param.getStartVertice() && this.endVertice == param.getEndVertice()
+				&& this.value == param.getValue();
+	}
+
 }

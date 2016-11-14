@@ -28,6 +28,9 @@ public class MatchedPiece extends Piece{
 //	}
 
 	public List<MatchedPiece> getMatchedPieces() {
+		if(matchedPieces == null){
+			matchedPieces = new ArrayList<MatchedPiece>();
+		}
 		return matchedPieces;
 	}
 
@@ -42,7 +45,7 @@ public class MatchedPiece extends Piece{
 		this.matchedPieces.add(matchedPiece);
 	}
 	
-//	public 
+ 
 
 
 }

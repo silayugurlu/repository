@@ -8,6 +8,9 @@ public class Piece {
 	private PieceId id;
 	private int[][] nodes;
 	private List<Edge> edges;
+	private boolean allEdgesSame;
+	private boolean symmetric;
+	private boolean mirrorSame;
 
 	public Piece() {
 		super();
@@ -28,6 +31,15 @@ public class Piece {
 		edges.add(new Edge(nodes[0][4], nodes[1][4] + nodes[2][4] * 2 + nodes[3][4] * 4, nodes[4][4])); // 1--2
 		edges.add(new Edge(nodes[4][4], nodes[4][3] + nodes[4][2] * 2 + nodes[4][1] * 4, nodes[4][0])); // 2--3
 		edges.add(new Edge(nodes[4][0], nodes[3][0] + nodes[2][0] * 2 + nodes[1][0] * 4, nodes[0][0])); // 3--0
+
+		this.symmetric = edges.get(0).equals(edges.get(2)) && edges.get(1).equals(edges.get(3));
+		this.allEdgesSame = edges.get(0).equals(edges.get(2)) && edges.get(1).equals(edges.get(3))
+				&& edges.get(0).equals(edges.get(1));
+
+		int verticeSum = nodes[0][0] + nodes[0][4] + nodes[4][4] + nodes[4][0];
+		this.mirrorSame = this.symmetric && (edges.get(0).getValue() == 2 || edges.get(0).getValue() == 5)
+				&& (edges.get(0).getValue() == 2 || edges.get(0).getValue() == 5)
+				&& (verticeSum == 0 || verticeSum == 4);
 	}
 
 	public PieceId getId() {
@@ -39,18 +51,19 @@ public class Piece {
 	}
 
 	public int[][] getNodes() {
-		if (id.isMirror()) {
-			this.nodes = mirrorNodes(this.nodes);
-		}
-		for (int i = 0; i < id.getRotation(); i++) {
-			this.nodes = rotateNodes(this.nodes);
-		}
-
 		return this.nodes;
 	}
 
 	public void setNodes(int[][] nodes) {
 		this.nodes = nodes;
+	}
+
+	public List<Edge> getEdges() {
+		return this.edges;
+	}
+
+	public Edge getEdge(int index) {
+		return this.edges.get(index);
 	}
 
 	public String convertLineToString(int lineIndex) {
@@ -99,40 +112,41 @@ public class Piece {
 		return node;
 	}
 
-	public List<Edge> mirrorEdges() {
+	public List<Edge> getMirrorEdges() {
 		List<Edge> edgesMirror = new ArrayList<Edge>();
-		edgesMirror.add(
-				new Edge(edges.get(0).getEndVertice(), edges.get(0).getReverseValue(), edges.get(0).getStartVertice())); // 0--1
-		edgesMirror.add(
-				new Edge(edges.get(3).getEndVertice(), edges.get(3).getReverseValue(), edges.get(3).getStartVertice())); // 1--2
 		edgesMirror.add(
 				new Edge(edges.get(2).getEndVertice(), edges.get(2).getReverseValue(), edges.get(2).getStartVertice())); // 2--3
 		edgesMirror.add(
 				new Edge(edges.get(1).getEndVertice(), edges.get(1).getReverseValue(), edges.get(1).getStartVertice())); // 3--0
+		edgesMirror.add(
+				new Edge(edges.get(0).getEndVertice(), edges.get(0).getReverseValue(), edges.get(0).getStartVertice())); // 0--1
+		edgesMirror.add(
+				new Edge(edges.get(3).getEndVertice(), edges.get(3).getReverseValue(), edges.get(3).getStartVertice())); // 1--2
+
 		return edgesMirror;
 	}
 
-	private int[][] rotateNodes(int[][] m) {
-		int[][] nodes = new int[5][];
-
-		nodes[0] = new int[] { m[4][0], m[3][0], m[2][0], m[1][0], m[0][0] };
-		nodes[1] = new int[] { m[4][1], 1, 1, 1, m[0][1] };
-		nodes[2] = new int[] { m[4][2], 1, 1, 1, m[0][2] };
-		nodes[3] = new int[] { m[4][3], 1, 1, 1, m[0][3] };
-		nodes[4] = new int[] { m[4][4], m[3][4], m[2][4], m[1][4], m[0][4] };
-
-		return nodes;
+	/**
+	 * @return the allEdgesSame
+	 */
+	public boolean isAllEdgesSame() {
+		return allEdgesSame;
 	}
 
-	private int[][] mirrorNodes(int[][] m) {
-		int[][] nodes = new int[5][];
 
-		nodes[0] = m[4];
-		nodes[1] = m[3];
-		nodes[2] = m[2];
-		nodes[3] = m[1];
-		nodes[4] = m[0];
-		return nodes;
+	/**
+	 * @return the symmetric
+	 */
+	public boolean isSymmetric() {
+		return symmetric;
 	}
+
+	/**
+	 * @return the mirrorSame
+	 */
+	public boolean isMirrorSame() {
+		return mirrorSame;
+	}
+
 
 }
