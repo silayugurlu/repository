@@ -1,109 +1,109 @@
 package com.game.cube.model;
 
+/**
+ *
+ * @author silay.ugurlu
+ */
 public class Edge {
 
-	private int startVertice;
+    private int startVertice;
 
-	private int value;
+    private int value;
 
-	private int endVertice;
+    private int endVertice;
 
-	private int reverseValue;
+    private int reverseValue;
 
-	private int key;
-	
-	public Edge() {
-		super();
-	}
+    private int key;
 
-	public Edge(int startVertice, int value, int endVertice) {
-		super();
-		this.startVertice = startVertice;
-		this.value = value;
-		this.endVertice = endVertice;
-		if (value == 2 || value == 5) {
-			this.reverseValue = value;
-		}else if (value > 3) {
-			this.reverseValue = value - 3;
-		} else {
-			this.reverseValue = value + 3;
-		}
-		key = this.startVertice* 8 + this.value  + this.endVertice *16;  
-	}
+    public Edge() {
+        super();
+    }
 
-	/**
-	 * @return the startVertice
-	 */
-	public int getStartVertice() {
-		return startVertice;
-	}
+    public Edge(int startVertice, int value, int endVertice) {
+        super();
+        this.startVertice = startVertice;
+        this.value = value;
+        this.endVertice = endVertice;
+        if (value == 2 || value == 5) {
+            this.reverseValue = value;
+        } else if (value > 3) {
+            this.reverseValue = value - 3;
+        } else {
+            this.reverseValue = value + 3;
+        }
+        key = this.startVertice * 8 + this.value + this.endVertice * 16;
+    }
 
-	/**
-	 * @param startVertice
-	 *            the startVertice to set
-	 */
-	public void setStartVertice(int startVertice) {
-		this.startVertice = startVertice;
-	}
+    /**
+     * @return the startVertice
+     */
+    public int getStartVertice() {
+        return startVertice;
+    }
 
-	/**
-	 * @return the value
-	 */
-	public int getValue() {
-		return value;
-	}
+    /**
+     * @param startVertice the startVertice to set
+     */
+    public void setStartVertice(int startVertice) {
+        this.startVertice = startVertice;
+    }
 
-	/**
-	 * @param value
-	 *            the value to set
-	 */
-	public void setValue(int value) {
-		this.value = value;
-	}
+    /**
+     * @return the value
+     */
+    public int getValue() {
+        return value;
+    }
 
-	/**
-	 * @return the endVertice
-	 */
-	public int getEndVertice() {
-		return endVertice;
-	}
+    /**
+     * @param value the value to set
+     */
+    public void setValue(int value) {
+        this.value = value;
+    }
 
-	/**
-	 * @param endVertice
-	 *            the endVertice to set
-	 */
-	public void setEndVertice(int endVertice) {
-		this.endVertice = endVertice;
-	}
+    /**
+     * @return the endVertice
+     */
+    public int getEndVertice() {
+        return endVertice;
+    }
 
-	/**
-	 * @return the reverseValue
-	 */
-	public int getReverseValue() {
-		return reverseValue;
-	}
+    /**
+     * @param endVertice the endVertice to set
+     */
+    public void setEndVertice(int endVertice) {
+        this.endVertice = endVertice;
+    }
 
-	/**
-	 * @param reverseValue
-	 *            the reverseValue to set
-	 */
-	public void setReverseValue(int reverseValue) {
-		this.reverseValue = reverseValue;
-	}
+    /**
+     * @return the reverseValue
+     */
+    public int getReverseValue() {
+        return reverseValue;
+    }
 
-	@Override
-	public int hashCode() {
-		return key;
-	}
+    /**
+     * @param reverseValue the reverseValue to set
+     */
+    public void setReverseValue(int reverseValue) {
+        this.reverseValue = reverseValue;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		Edge param = (Edge) obj;
-		return this.startVertice == param.getStartVertice() && this.endVertice == param.getEndVertice()
-				&& this.value == param.getValue();
-	}
+    @Override
+    public int hashCode() {
+        return key;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        Edge param = (Edge) obj;
+        return this.startVertice == param.getStartVertice() && this.endVertice == param.getEndVertice()
+                && this.value == param.getValue();
+    }
 
 }

@@ -7,7 +7,6 @@ import org.mockito.Mockito;
 
 import static org.junit.Assert.*;
 
-import com.game.cube.helper.CubeHelper;
 import com.game.cube.model.Piece;
 import com.game.cube.model.PieceId;
 
