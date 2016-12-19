@@ -13,21 +13,26 @@ public class MeterReading {
     private Long id;
     
     private Long connectionId;
-    private String profile;
-    private Integer monthOfYear;
+    private Profile profile;
     private Integer value;
-    private Integer year;
 
-    public MeterReading(Long connectionId, String profile, Integer monthOfYear, Integer value, Integer year) {
-        this.connectionId = connectionId;
-        this.profile = profile;
-        this.monthOfYear = monthOfYear;
-        this.value = value;
-        this.year = year;
+    
+    
+    public MeterReading() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
+
+	public MeterReading(Long id, Long connectionId, Profile profile, Integer value) {
+        this.id = id;
+		this.connectionId = connectionId;
+        this.profile = profile;   
+        this.value = value;        
     }
 
-    
-    
+      
     public Long getConnectionId() {
         return connectionId;
     }
@@ -36,36 +41,13 @@ public class MeterReading {
         this.connectionId = connectionId;
     }
 
-    public String getProfile() {
-        return profile;
-    }
-
-    public void setProfile(String profile) {
-        this.profile = profile;
-    }
-
-    public Integer getMonthOfYear() {
-        return monthOfYear;
-    }
-
-    public void setMonthOfYear(Integer monthOfYear) {
-        this.monthOfYear = monthOfYear;
-    }
-
+   
     public Integer getValue() {
         return value;
     }
 
     public void setValue(Integer value) {
         this.value = value;
-    }
-
-    public Integer getYear() {
-        return year;
-    }
-
-    public void setYear(Integer year) {
-        this.year = year;
     }
 
     public Long getId() {

@@ -27,7 +27,7 @@ public class MeterReadingController {
 	private MeterReadingRepository repository;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<Collection<MeterReading>> getAllPies() {
+	public ResponseEntity<Collection<MeterReading>> getAllReadings() {
 		return new ResponseEntity<Collection<MeterReading>>((Collection<MeterReading>) repository.findAll(), HttpStatus.OK);
 	}
 }
