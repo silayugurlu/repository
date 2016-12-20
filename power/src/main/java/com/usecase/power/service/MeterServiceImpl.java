@@ -6,6 +6,8 @@ import com.usecase.power.model.Fraction;
 import com.usecase.power.model.MeterReading;
 
 public class MeterServiceImpl implements MeterService{
+	
+	
 
 	@Override
 	public Iterable<Fraction> getAllFranction() {
