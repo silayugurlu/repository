@@ -41,7 +41,7 @@ public class KalahManagedBean {
 	}
 
 	public void endGame(ActionEvent actionEvent) {
-		this.kalahManager = new KalahManagerImpl();
+		
 		this.started = false;
 	}
 
